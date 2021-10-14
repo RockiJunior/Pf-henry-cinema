@@ -1,3 +1,4 @@
+
 import {
     ADD_TO_CART,
     CLEAR_CART,
@@ -7,12 +8,15 @@ import {
     SEATS,
     INCREMENT_CART,
     DECREMENT_CART,
-    POST_FILL_CART
+    POST_FILL_CART,
+    STORAGE,
+
 } from './cartsActions';
 
 export const initialState = {
     cart: [],
     movies: [],
+    storage:[],
     cinemas: [{
             name: "Kaia",
             id: 1,
@@ -80,18 +84,27 @@ function cartReducer(state = initialState, action) {
 
         case ADD_TO_CART:
 
-            let newItem = state.movies.find((movie) => movie.id === action.payload);
-            let iteminCart = state.cart.find((item) => item.id === newItem.id)
-            let movieId = newItem.id
+            let newItem = state.movies.find((movie) => movie.id == action.payload);
+            let iteminCart = state.cart.find((item) => item.id == newItem.id)
+            let movieId = newItem? newItem.id: null
             return iteminCart ? {
                 ...state,
-                cart: state.cart.map((item) => item.id === newItem.id ? {...item, quantity: item.quantity + 1 } : item),
+                cart: state.cart.map((item) => item.id == newItem.id ? {...item, quantity: item.quantity + 1 } : item),
                 postCart: [...state.postCart, { movieId }]
             } : {
                 ...state,
                 cart: [{...newItem, quantity: 1 }],
                 postCart: [{ movieId }]
             }
+            case STORAGE:
+                let estado= state.cart
+                    window.localStorage.setItem("id",JSON.stringify( estado))
+                    let store2=JSON.parse(window.localStorage.getItem("id"))
+                return{
+                    ...state,
+                    storage: store2
+                }
+
         case POST_FILL_CART:
             return {
                 ...state
@@ -143,9 +156,11 @@ function cartReducer(state = initialState, action) {
             {
                 let result = state.cart.map(item => item ? {...item, quantity: item.quantity + 1 } :
                     item)
+
                 return {
                     ...state,
-                    cart: result
+                    cart: result,
+    
                 }
             }
         case DECREMENT_CART:

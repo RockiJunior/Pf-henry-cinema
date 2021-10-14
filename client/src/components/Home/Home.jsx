@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import Movie from "../Movie/Movie";
 // import initialState from '../../reducer/shoping.js'
 // import shopingReducer from '../../reducer/shoping.js'
+import { addProductCart } from "../Utils/LocalStoreFunction";
 import {
   filterGenre,
   movieAvailability,
 } from "../../redux/movies/moviesAction";
-import { addToCart } from "../../redux/carts/cartsActions";
+import { addToCart, storage } from "../../redux/carts/cartsActions";
 import "./Home.css";
 
 function Home() {
@@ -31,9 +32,16 @@ function Home() {
     // totalItems++
     // console.log(totalItems)
     console.log("console home",id)
-    dispatch (addToCart(id))
+      let date = JSON.parse(localStorage.getItem('data')) || []
+      
+    
+   dispatch(addToCart(id))
+    // console.log(Products);
+    dispatch(storage(id));
+        }
+  
 
-}
+
 
   return (
     <div>

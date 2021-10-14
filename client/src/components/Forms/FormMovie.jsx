@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import image from "../Forms/img/posterForm.jpeg";
 import bg from "../Forms/img/bgForm.jpeg";
@@ -8,22 +8,30 @@ import paper from "../Forms/img/paperForm.jpg";
 import swal from "sweetalert";
 import { useStyles } from "./stylesForms";
 import FormGenre from "./FormGenre";
+import { postMovie } from "../../redux/movies/moviesAction";
 
 const FormMovie = () => {
+  const dispatch = useDispatch()
   const clasess = useStyles();
   const history = useHistory();
   const { genres } = useSelector((state) => state.moviesReducer);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
-    Nombre: "",
-    Puntaje: 0,
-    PuntajeUsuario: 0,
-    Disponibilidad: true,
-    Precio: 0,
-    Imagen: "",
-    Resumen: "",
-    Duracion: 0,
-    Genero: [],
+      title : "messi10",
+      rating : 5,
+      description : "kk",
+      actors : ["kk"],
+      director : "kk",
+      usersRating : 5,
+      votes : 0,
+      availability : true,
+      price : 0,
+      image : "kk",
+      runTime : "kk",
+      genre : "kk",
+      cinema: "kk",
+      sala: "kk",
+      funcion: 12
   });
 
   const validate = (form) => {
@@ -44,19 +52,19 @@ const FormMovie = () => {
     return errors;
   };
 
-  const handleChange = (e) => {
-    var objErrors = validate({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-    setErrors(objErrors);
-    console.log(errors);
-    setForm((form) => {
-      return {
-        ...form,
-        [e.target.name]: e.target.value,
-      };
-    });
+   const handleChange = (e) => {
+    // var objErrors = validate({
+    //   ...form,
+    //   [e.target.name]: e.target.value,
+    // });
+    // setErrors(objErrors);
+    // console.log(errors);
+    // setForm((form) => {
+    //   return {
+    //     ...form,
+    //     [e.target.name]: e.target.value,
+    //   };
+    // });
   };
 
   const handleSelect = (e) => {
@@ -72,7 +80,7 @@ const FormMovie = () => {
     setForm((form) => {
       return {
         ...form,
-        Genero: [...form.Genero, e.target.value],
+        // Genero: [...form.Genero, e.target.value],
       };
     });
   };
@@ -82,7 +90,7 @@ const FormMovie = () => {
     setForm((form) => {
       return {
         ...form,
-        Genero: form.Genero.filter((genres) => genres !== e),
+        // Genero: form.Genero.filter((genres) => genres !== e),
       };
     });
   };
@@ -90,26 +98,29 @@ const FormMovie = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //se ejecuta action que mande ese form al back
-    if (Object.values(errors).length > 0) {
-      swal("", "faltan campos por completar", "warning");
-    } else {
-      setForm({
-        nombre: "",
-        Puntaje: 0,
-        PuntajeUsuario: 0,
-        Disponibilidad: true,
-        Precio: 0,
-        Imagen: "",
-        Resumen: "",
-        Duracion: 0,
-        Genero: "",
-      });
+    // if (Object.values(errors).length > 0) {
+    //   swal("", "faltan campos por completar", "warning");
+    // } else {
+      console.log('entro aca', form)
+      dispatch(postMovie(form))
+      
+      // setForm({
+      //   nombre: "",
+      //   Puntaje: 0,
+      //   PuntajeUsuario: 0,
+      //   Disponibilidad: true,
+      //   Precio: 0,
+      //   Imagen: "",
+      //   Resumen: "",
+      //   Duracion: 0,
+      //   Genero: "",
+      // });
 
       swal("Pelicula Creada!", "", "success");
       history.push("/"); //hay que poner la ruta de router a donde reenvia
       // window.location.replace('')
     }
-  };
+
 
   return (
     <div className="container">
@@ -128,11 +139,12 @@ const FormMovie = () => {
                   className={clasess.input}
                   placeholder="Nombre"
                   type="text"
-                  name="Nombre"
+                  name="title"
                   onChange={handleChange}
+                  value={form.title}
                 />
-                {errors.nombre && (
-                  <p className={clasess.error}>{errors.nombre}</p>
+                {errors.title && (
+                  <p className={clasess.error}>{errors.title}</p>
                 )}
               </div>
               <div className={clasess.miniBox}>
@@ -142,11 +154,26 @@ const FormMovie = () => {
                   type="number"
                   min="0"
                   max="10"
-                  name="Puntaje"
+                  name="rating"
                   onChange={handleChange}
+                  value={form.rating}
                 />
-                {errors.puntaje && (
-                  <p className={clasess.error}>{errors.puntaje}</p>
+              
+     
+      {/* actors : [],
+      director : "",
+      usersRating : 0,
+      votes : 0,
+      availability : true,
+      price : 0,
+      image : "",
+      runTime : "",
+      genre : "",
+      cinema: "",
+      sala: "",
+      funcion: 12 */}
+                {errors.rating && (
+                  <p className={clasess.error}>{errors.rating}</p>
                 )}
               </div>
 
@@ -157,8 +184,9 @@ const FormMovie = () => {
                   type="number"
                   min="0"
                   max="10"
-                  name="puntajeUsuario"
+                  name="description"
                   onChange={handleChange}
+                  value={form.description}
                 />
               </div>
 
@@ -167,8 +195,9 @@ const FormMovie = () => {
                   className={clasess.input}
                   placeholder="Precio"
                   type="number"
-                  name="Precio"
+                  name="actores"
                   onChange={handleChange}
+                  value={form.actores}
                 />
                 {errors.precio && (
                   <p className={clasess.error}>{errors.precio}</p>
@@ -182,6 +211,7 @@ const FormMovie = () => {
                   type="text"
                   name="Imagen"
                   onChange={handleChange}
+                  value={form.Imagen}
                 />
                 {errors.imagen && (
                   <p className={clasess.error}>{errors.imagen}</p>
@@ -194,6 +224,7 @@ const FormMovie = () => {
                   name="Resumen"
                   placeholder="Resumen"
                   onChange={handleChange}
+                  value={form.Resumen}
                 />
                 {errors.resumen && (
                   <p className={clasess.error}>{errors.resumen}</p>
@@ -207,6 +238,7 @@ const FormMovie = () => {
                   type="number"
                   name="Duracion"
                   onChange={handleChange}
+                  value={form.Duracion}
                 />
                 {errors.duracion && (
                   <p className={clasess.error}>{errors.duracion}</p>
@@ -242,11 +274,11 @@ const FormMovie = () => {
             <img src={paper} className={clasess.imgPaper} alt=""/>
 
             <ul className={clasess.render}>
-              {form.Genero.map((el, i) => (
+              {/* {form.Genero.map((el, i) => (
                 <div key={i}>
                   <div>{el}<button className={clasess.btnX}onClick={() => deleteGenero(el)}>X</button></div>
                 </div>
-              ))}
+              ))} */}
             </ul><FormGenre />
           </div>
         </div>

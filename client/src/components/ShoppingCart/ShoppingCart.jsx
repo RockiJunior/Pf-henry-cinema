@@ -15,7 +15,7 @@ import Select from "./Select";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-import { postCartFill } from "../../redux/carts/cartsActions";
+import { addToCart, getAll, postCartFill } from "../../redux/carts/cartsActions";
 import "./ShoppingCart.css";
 import { Card } from "@mui/material";
 import { getMovies } from "../../redux/movies/moviesAction";
@@ -27,10 +27,10 @@ function ShopingCart() {
   const { postCart } = useSelector((state) => state.cartReducer);
   const { cart } = useSelector((state) => state.cartReducer);
   const dispatch = useDispatch();
-
+  const[text, setText]= useState(JSON.parse(window.localStorage.getItem("id")))
   useEffect(() => {
-    dispatch(getMovies());
-  }, [dispatch]);
+    dispatch(getAll());
+  }, []);
 
   const [fillShop, setFillShop] = useState([]);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -61,21 +61,10 @@ function ShopingCart() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-//   const handleSkip = () => {
-//     if (!isStepOptional(activeStep)) {
-//       // You probably want to guard against something like this,
-//       // it should never occur unless someone's actively trying to break something.
-//       throw new Error("You can't skip a step that isn't optional.");
-//     }
+function fillState (id){
 
-//     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-//     setSkipped((prevSkipped) => {
-//       const newSkipped = new Set(prevSkipped.values());
-//       newSkipped.add(activeStep);
-//       return newSkipped;
-//     });
-//   };
-
+  dispatch(addToCart(id))
+}
   const handleReset = () => {
     setActiveStep(0);
   };
@@ -131,8 +120,9 @@ function ShopingCart() {
                 {/* **** SE MUESTRA EL CONTENIDO DEL CARRITO ******* */}
                 <Box sx={{ height: 440, marginTop: 2 }}>
                   {activeStep === 0 ? (
-                    cart &&
-                    cart.map((movie) => {
+                    text?
+    
+                    text.map((movie) => {
                       return (
                         <CartItem
                           key={movie.id}
@@ -141,10 +131,22 @@ function ShopingCart() {
                           id={movie.id}
                           price={movie.price}
                           quantity={movie.quantity}
+                       
                         />
                       );
-                    })
-                  ) : activeStep === 1 ? (
+                    }): 
+                    (cart && cart.map((movie) => {
+                      return (
+                        <CartItem
+                          key={movie.id}
+                          image={movie.image}
+                          title={movie.title}
+                          id={movie.id}
+                          price={movie.price}
+                          quantity={movie.quantity}
+                          />
+                    )})
+                  )) : activeStep === 1 ? (
                     <Select />
                   ) : (
                     <PurchaseCart />

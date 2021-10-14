@@ -32,7 +32,7 @@ const useStyle = makeStyles({
 
 function NavBar() {
   const [user, setUser] = useState(false);
-
+ const[text, setText]= useState(JSON.parse(window.localStorage.getItem("id")))
   useEffect(() => {
     const x = getToken();
     if (x.msg) {
@@ -49,6 +49,11 @@ function NavBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+// let data= (cart) => {
+//   try{ setText(cart)
+//     window.localStorage.setItem("text", cart)}
+//     catch(err){}}
+//     console.log(cart)
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -179,13 +184,13 @@ function NavBar() {
             <Box sx={{ display: { xs: "none", md: "flex" }, fontWeight: 900 }}>
               <SearchBar />
               
-              <Link to={ cart.length? `/shoppingCart`: ''}>
+              <Link to={ text && text.length? `/shoppingCart`: ''}>
                 <IconButton
                   size="large"
                   aria-label="notifications"
                   color="inherit"
                 >
-                  <Badge badgeContent={cart.length} color="error">
+                  <Badge badgeContent={text && text.length} color="error">
                     <ShoppingCartIcon className={classes.botonHover} />
                   </Badge>
                 </IconButton>

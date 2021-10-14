@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { incrementCart, decrementCart, clearCart } from '../../redux/carts/cartsActions';
+import { incrementCart, decrementCart, clearCart, addToCart } from '../../redux/carts/cartsActions';
 
 import { cinemaSelect, screeningSelect } from '../../redux/carts/cartsActions';
 
 import './CartItem.css'
 
-export default function CartItem  ({image, price, title, id, quantity}) {
+export default function CartItem  ({image, price, title, id, quantity, fillState}) {
 
    const history = useHistory()
    
@@ -28,10 +28,12 @@ export default function CartItem  ({image, price, title, id, quantity}) {
    }
  
    function handleIncrement(){
-      dispatch(incrementCart())
+
+      dispatch(incrementCart(id))
    } 
 
    function handleDecrement(){
+
       dispatch(decrementCart())
    } 
 
@@ -103,6 +105,7 @@ export default function CartItem  ({image, price, title, id, quantity}) {
             <div className="Tickets">
                <div style={{width: 250, margin: '0 auto', textAlign: 'center'}}>
                   <h3>Cantidad de boletos:</h3> 
+                
                   <button onClick={handleIncrement} className="CartItemButton" >+</button>
                   <button onClick={handleDecrement} className="CartItemButton">-</button>
                   <div className="Quantity">{quantity}</div>

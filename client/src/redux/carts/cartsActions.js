@@ -7,7 +7,8 @@ export const SEATS = 'SEATS'
 export const GET_ALL = 'GET_ALL';
 export const INCREMENT_CART='INCREMENT_CART';
 export const DECREMENT_CART='DECREMENT_CART';
-export const POST_FILL_CART= 'POST_FILL_CART'
+export const POST_FILL_CART= 'POST_FILL_CART';
+export const STORAGE= 'STORAGE'
 // export function addToCart() {
 //     return function(dispatch) {
 //       return axios.get("http://localhost:3001/countries")
@@ -25,6 +26,13 @@ export function addToCart(id) {
         payload: id
     }
 }
+export function storage(payload) {
+    return {
+        type: STORAGE,
+        payload
+    }
+}
+
 
 export function getAll() {
     return async(dispatch) => {

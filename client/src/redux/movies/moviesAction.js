@@ -58,8 +58,8 @@ export function cleanDetail(payload) {
 
 export function postMovie(payload) {
     return async function(dispatch) {
-        const response = await axios.post(`http://18.216.130.223:3001/api/movies`, payload)
-        return response
+        const response = await axios.post(`http://18.216.130.223:3001/api/movies/createMovie`, payload)
+        return  response
     }
 }
 
